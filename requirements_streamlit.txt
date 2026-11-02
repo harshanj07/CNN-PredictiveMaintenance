@@ -1,0 +1,9 @@
+# Streamlit app dependencies (CPU-only, no tensorflow / shap / mlflow)
+streamlit>=1.35.0
+torch>=2.0.0          # CPU build – install via: pip install torch --index-url https://download.pytorch.org/whl/cpu
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+pyyaml>=6.0
+Pillow>=10.0.0
+
