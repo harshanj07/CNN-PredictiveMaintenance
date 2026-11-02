@@ -1,0 +1,13 @@
+Evaluation Metrics:
+
+CNN Model:
+accuracy: 0.6481
+precision: 0.7757
+recall: 0.6481
+f1_score: 0.5364
+
+SIAMESE Model:
+accuracy: 0.3815
+precision: 0.1456
+recall: 0.3815
+f1_score: 0.2107

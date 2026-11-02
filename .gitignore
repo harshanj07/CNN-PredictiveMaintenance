@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+data/
+logs/
+# Do NOT ignore models/ or results/ — needed for Streamlit Cloud deployment
