@@ -52,7 +52,7 @@ MODULES = {
     "HL":  ["I_w_HL_Weg",   "O_w_HL_power",   "O_w_HL_voltage"],
 }
 
-# Sample values from the API schema example (the rest default to 0)
+# Sample values from the API schema example (Normal baseline)
 SAMPLE_VALUES = {
     "I_w_BLO_Weg":   -107,
     "I_w_BHR_Weg":  -1268,
@@ -62,6 +62,19 @@ SAMPLE_VALUES = {
     "O_w_HR_power":  7168,
     "O_w_HR_voltage":  26,
     "O_w_HL_power":  7720,
+    "O_w_HL_voltage":  24,
+}
+
+# Values representing a verified Hydraulic Pressure Collapse Fault
+FAULT_VALUES = {
+    "I_w_BLO_Weg":   -107,
+    "I_w_BHR_Weg":      0,
+    "I_w_BRU_Weg":    -26,
+    "O_w_BRU_power":   84,
+    "O_w_BRU_voltage": 11,
+    "O_w_HR_power":     0,
+    "O_w_HR_voltage":   0,
+    "O_w_HL_power":     0,
     "O_w_HL_voltage":  24,
 }
 
@@ -191,10 +204,18 @@ def page_predict():
     with tab_manual:
         st.write("Enter sensor readings for a single time-step, then click **Predict**.")
 
-        # "Load sample" pre-fills session state with the example values
-        if st.button("📋 Load sample values"):
-            for key in FEATURE_KEYS:
-                st.session_state[f"inp_{key}"] = float(SAMPLE_VALUES.get(key, 0.0))
+        # Quick buttons to load Normal or Fault sample scenarios
+        btn_col1, btn_col2 = st.columns(2)
+        with btn_col1:
+            if st.button("📋 Load Normal Sample", use_container_width=True):
+                for key in FEATURE_KEYS:
+                    st.session_state[f"inp_{key}"] = float(SAMPLE_VALUES.get(key, 0.0))
+                st.rerun()
+        with btn_col2:
+            if st.button("⚠️ Load Fault Sample", use_container_width=True):
+                for key in FEATURE_KEYS:
+                    st.session_state[f"inp_{key}"] = float(FAULT_VALUES.get(key, 0.0))
+                st.rerun()
 
         # Render inputs grouped by module (two modules per row)
         module_names = list(MODULES.keys())
