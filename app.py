@@ -149,6 +149,22 @@ def run_inference(features: list[float]):
 # Page helpers
 # ---------------------------------------------------------------------------
 
+def render_metric_card(label: str, value: str):
+    """
+    Render a robust HTML metric card that never fails due to adblockers
+    or lazy-loaded dynamic JS chunk network issues (e.g. Metric.DMz1h4un.js).
+    """
+    st.markdown(
+        f"""
+        <div style="background-color: #1E2130; padding: 14px 18px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 8px;">
+            <div style="color: #94A3B8; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">{label}</div>
+            <div style="color: #F8FAFC; font-size: 26px; font-weight: 700; margin-top: 4px;">{value}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 def show_prediction_result(cnn_pred: int, cnn_conf: float, siam_sim: float):
     """Render result banner and metric cards."""
     st.divider()
@@ -158,8 +174,10 @@ def show_prediction_result(cnn_pred: int, cnn_conf: float, siam_sim: float):
         st.error("### ⚠️  Fault Detected")
 
     col1, col2 = st.columns(2)
-    col1.metric("CNN Confidence",     f"{cnn_conf * 100:.1f} %")
-    col2.metric("Siamese Similarity", f"{siam_sim:.4f}")
+    with col1:
+        render_metric_card("CNN Confidence", f"{cnn_conf * 100:.1f} %")
+    with col2:
+        render_metric_card("Siamese Similarity", f"{siam_sim:.4f}")
 
 
 # ── Page 1: Predict ─────────────────────────────────────────────────────────
@@ -273,7 +291,7 @@ def page_predict():
 
             st.subheader("Results")
             st.dataframe(results_df, use_container_width=True)
-            st.metric("Fault rate across windows", f"{fault_pct:.1f} %")
+            render_metric_card("Fault rate across windows", f"{fault_pct:.1f} %")
 
 
 # ── Page 2: Model Results ────────────────────────────────────────────────────
